@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        $("p").hide();
+    });
+});
+</script>
+</head>
+<body>
+
+    <form action="http://192.168.0.112:8080/user/login">
+      First name:<br>
+      <input type="text" name="phone" value="191">
+      <br>
+      Last name:<br>
+      <input type="text" name="password" value="123">
+      <br><br>
+      <input type="submit" value="Login">
+    </form>
+
+
+</body>
+</html>
