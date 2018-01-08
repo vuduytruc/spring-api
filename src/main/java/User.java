@@ -1,7 +1,8 @@
 import java.sql.*;
 import java.util.*;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
 
     Integer id;
     String phone;
@@ -36,7 +37,6 @@ public class User {
             //
         }
     }
-
 
     User(String phone, String password, String name, String address) {
         this.phone = phone;
@@ -126,7 +126,6 @@ public class User {
             User.openConnect();
 
             String sql = "SELECT * FROM user WHERE phone = " + phone + " AND password = " + password;
-
             ResultSet rs = User.stmt.executeQuery(sql);
 
             if (rs.next()) {
@@ -142,68 +141,37 @@ public class User {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
+            //
         } finally {
             User.closeConnect();
         }
 
         return user;
     }
-    public int addUser(String phone, String name, String password, String address, String longitude, String latitude){
 
-        int success = 0;
-        try{
-            User.openConnect();
-            String sql = "Insert into user(name, phone, address, password, longitude, latitude) values (name, phone, address, password, longitude, latitude)";
-            User.stmt.executeUpdate(sql);
-            success = 1;
-            System.out.println("them thanh cong!");
-        } catch(Exception e){
-            success = 0;
-            System.out.println("them that bai!");
-        } finally {
-            User.closeConnect();
-        }
-        return success;
-    }
+    public static Boolean changePassword(String phone, String oldpassword, String newPassword) {
+        User user = User.login(phone, oldpassword);
+        if (user == null) {
+            return false;
+        } else {
+            Integer rs = 0;
 
-    public int deleteUser(String phone){
-        int success = 0;
-        try{
-            User.openConnect();
-            String sql = "DELETE user where phone =" + phone;
-            User.stmt.executeDelete(sql);
-            success = 1;
-            System.out.println("them thanh cong!");
-        } catch(Exception e){
-            success = 0;
-            System.out.println("them that bai!");
-        }
-        return success;
-    }
+            try {
 
-    public static User changePassword(String phone, String password, String newPass) {
-        String success;
+                User.openConnect();
 
-        try {
+                String sql = "UPDATE user SET password=" + newPassword + " + WHERE phone=" + phone;
 
-            User.openConnect();
+                rs = User.stmt.executeUpdate(sql);
 
-            String sql = "UPDATE user WHERE phone = " + phone + " AND password = " + password;
-
-            Integer rs = User.stmt.executeUpdate(sql);
-
-            if (rs > 0) {
-                success = "true";
+            } catch (Exception e) {
+                System.out.println(e);
+            } finally {
+                User.closeConnect();
             }
 
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            User.closeConnect();
+            return rs == 1 ? true : false;
         }
-
-        return user;
     }
 
     String toJson(Object obj) {

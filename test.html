@@ -2,26 +2,64 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
 <script>
 $(document).ready(function(){
     $("button").click(function(){
-        $("p").hide();
+        var url = "http://192.168.0.112:8080/user/login"
+        var data = { phone: "191", password: "123" }
+
+        // fetch(url, {
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        //         // 'Content-Type': 'application/json; charset=utf-8'
+        //     },
+        //     body: "phone=0123456789&password=123"
+        //     // body: JSON.stringify(data)
+        // })
+        // .then(function(response) {return response.json();})
+        // .then(function(resp) {
+        //     console.log(resp);
+        // })
+
+
+        // var data = new FormData();
+        // data.append( "json", JSON.stringify( data ) );
+        //
+        // fetch(url,
+        // {
+        //     method: "POST",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json; charset=utf-8'
+        //     },
+        //     body: data
+        // })
+        // .then(function(res){ return res.json(); })
+        // .then(function(data){ console.log( JSON.stringify( data ) ) })
+
+        var payload = { phone: "191", password: "123" };
+
+        var data = new FormData();
+        data.append( "json", JSON.stringify( payload ) );
+
+        fetch(url,
+        {
+            method: "POST",
+            body: data
+        })
+        .then(function(res){ return res.json(); })
+        .then(function(data){ alert( JSON.stringify( data ) ) })
     });
 });
 </script>
 </head>
 <body>
 
-    <form action="http://192.168.0.112:8080/user/login">
-      First name:<br>
-      <input type="text" name="phone" value="191">
-      <br>
-      Last name:<br>
-      <input type="text" name="password" value="123">
-      <br><br>
-      <input type="submit" value="Login">
-    </form>
 
+    <button type="button" name="button">CHECK</button>
 
 </body>
 </html>
